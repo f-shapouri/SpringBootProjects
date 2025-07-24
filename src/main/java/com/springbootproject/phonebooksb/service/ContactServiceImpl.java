@@ -3,6 +3,7 @@ package com.springbootproject.phonebooksb.service;
 import com.springbootproject.phonebooksb.model.Contact;
 import com.springbootproject.phonebooksb.model.PhoneNumber;
 import com.springbootproject.phonebooksb.repository.ContactRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,24 +40,12 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Contact updateContact(Long id, Contact updateContact) {
-//        Contact existContact  = contactRepository.findById(id)
-//                .map(existingContact -> {
-//                    existingContact.setFirstName(contact.getFirstName());
-//                    existingContact.setLastName(contact.getLastName());
-//                    existingContact.setEmail(contact.getEmail());
-//                    existingContact.setPhoneNumberList(contact.getPhoneNumberList());
-//                    return contactRepository.save(existingContact);
-//                })
-//                .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
         Contact existContact = contactRepository.findById(id).orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
         existContact.setFirstName(updateContact.getFirstName());
         existContact.setLastName(updateContact.getLastName());
         existContact.setEmail(updateContact.getEmail());
 
         List<PhoneNumber> updatePhones = updateContact.getPhoneNumberList();
-//        existContact.getPhoneNumberList().removeIf(existingPhone ->
-//                updatePhones.stream().noneMatch(p -> p.getId() != null && p.getId().equals(existingPhone.getId()))
-//        );
 
         for (PhoneNumber updatePhone : updatePhones) {
             if (updatePhone.getId() == null) {
